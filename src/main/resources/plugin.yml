@@ -1,0 +1,4 @@
+name: nuker
+version: '${version}'
+main: red.oases.nuker.Nuker
+api-version: '1.20'
