@@ -1,0 +1,6 @@
+effect-layers:
+  '[80,)':
+    - WHITHER:2
+    - HUNGER:2
+    - NAUSEA:2
+    - BLINDNESS:2
