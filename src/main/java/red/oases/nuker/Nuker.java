@@ -9,8 +9,10 @@ public final class Nuker extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        saveDefaultConfig();
         Files.load(this);
         logger = getLogger();
+        getServer().getPluginManager().registerEvents(new EffectLayerListener(), this);
     }
 
     @Override

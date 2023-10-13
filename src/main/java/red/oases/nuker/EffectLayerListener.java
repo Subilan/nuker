@@ -11,7 +11,9 @@ public class EffectLayerListener implements Listener {
         var currentBlockY = e.getTo().getBlockY();
         for (var layer : Layers.getAll()) {
             if (layer.contains(currentBlockY)) {
-                layer.applyAll(e.getPlayer());
+                layer.applyAllNotPresent(e.getPlayer());
+            } else {
+                layer.cancelAllPresent(e.getPlayer());
             }
         }
     }

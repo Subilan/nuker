@@ -1,7 +1,6 @@
 package red.oases.nuker;
 
 import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffect;
 
 import java.util.List;
 import java.util.regex.Pattern;
@@ -36,16 +35,28 @@ public record Layer(String yExpression, List<String> effects) {
                 );
     }
 
-    public void applyAll(Player p) {
-        PotionEffect targetEffect, currentEffect;
+    public void applyAllNotPresent(Player p) {
         for (var ef : effects) {
-            targetEffect = Effect.from(ef);
+            var targetEffect = Effect.from(ef);
             if (targetEffect == null) continue;
-            currentEffect = p.getPotionEffect(targetEffect.getType());
-            if (currentEffect != null) {
-                if (currentEffect.getAmplifier() == targetEffect.getAmplifier()) continue;
-            }
+            if (Utils.isEffectEqual(
+                    p.getPotionEffect(targetEffect.getType()),
+                    targetEffect
+            )) continue;
             p.addPotionEffect(targetEffect);
+        }
+    }
+
+    public void cancelAllPresent(Player p) {
+        for (var ef : effects) {
+            var targetEffect = Effect.from(ef);
+            if (targetEffect == null) continue;
+            if (Utils.isEffectEqual(
+                    p.getPotionEffect(targetEffect.getType()),
+                    targetEffect
+            )) {
+                p.removePotionEffect(targetEffect.getType());
+            }
         }
     }
 }
