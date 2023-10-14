@@ -14,19 +14,15 @@ public class Tab implements TabCompleter {
         return switch (args.length) {
             case 1 -> List.of("item");
 
-            case 2 -> {
-                yield switch (args[1]) {
-                    case "item" -> List.of("digging-tool", "effect-proof");
-                    default -> null;
-                };
-            }
+            case 2 -> switch (args[1]) {
+                case "item" -> List.of("digging-tool", "effect-proof");
+                default -> null;
+            };
 
-            case 3 -> {
-                yield switch (args[1]) {
-                    case "item" -> List.of("true", "false");
-                    default -> null;
-                };
-            }
+            case 3 -> switch (args[1]) {
+                case "item" -> List.of("true", "false");
+                default -> null;
+            };
 
             default -> null;
         };
