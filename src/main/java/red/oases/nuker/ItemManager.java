@@ -2,6 +2,7 @@ package red.oases.nuker;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
@@ -11,8 +12,12 @@ import java.util.ArrayList;
 
 public class ItemManager {
     // TODO: colorize by RGB gradient
-    public static final Component immunityText = Component.text("核爆免疫").color(NamedTextColor.GREEN);
-    public static final Component nuclearSeeking = Component.text("核能窥探").color(NamedTextColor.GREEN);
+    public static final Component immunityText = Component.text("核爆免疫")
+            .decoration(TextDecoration.ITALIC, TextDecoration.State.FALSE)
+            .color(NamedTextColor.GREEN);
+    public static final Component nuclearSeeking = Component.text("核能窥探")
+            .decoration(TextDecoration.ITALIC, TextDecoration.State.FALSE)
+            .color(NamedTextColor.GREEN);
 
     public static NamespacedKey property(@NotNull String key) {
         return new NamespacedKey(Nuker.plugin, "oasis-nuker-item-property-" + key);
