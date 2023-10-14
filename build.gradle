@@ -6,6 +6,10 @@ plugins {
 group = 'red.oases'
 version = '1.0'
 
+shadowJar {
+    relocate("de.tr7zw.changeme.nbtapi", "red.oases.api.nbt")
+}
+
 repositories {
     mavenCentral()
     maven {

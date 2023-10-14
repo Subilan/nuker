@@ -6,6 +6,8 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+
 public class ItemManager {
     // TODO: colorize by RGB gradient
     public static final Component immunityText = Component.text("核爆免疫").color(NamedTextColor.GREEN);
@@ -17,26 +19,24 @@ public class ItemManager {
 
     public static void setLore(ItemStack input, Component comp) {
         var meta = input.getItemMeta();
-        if (!meta.hasLore()) return;
-        var lore = meta.lore(); assert lore != null;
-        lore.add(comp);
+        var originalLore = meta.lore();
+        var currentLore = originalLore == null ? new ArrayList<Component>() : new ArrayList<>(originalLore);
+        currentLore.add(comp);
+        meta.lore(currentLore);
         input.setItemMeta(meta);
     }
 
     public static void removeLore(ItemStack input, Component comp) {
         var meta = input.getItemMeta();
-        if (!meta.hasLore()) return;
-        var lore = meta.lore(); assert lore != null;
-        if (!lore.remove(comp)) {
-            Nuker.logger.warning("Operation failed. Cannot remove lore from item.");
-        }
+        var originalLore = meta.lore();
+        var currentLore = originalLore == null ? new ArrayList<Component>() : new ArrayList<>(originalLore);
+        currentLore.remove(comp);
+        meta.lore(currentLore);
         input.setItemMeta(meta);
     }
 
     public static ItemStack setEffectProof(ItemStack input, boolean flag) {
-        NBT.modify(input, n -> {
-            n.setBoolean(property("effect-proof"), flag);
-        });
+        NBT.itemStackToNBT(input).setBoolean(property("effect-proof"), flag);
 
         if (flag) {
             setLore(input, immunityText);
@@ -48,24 +48,24 @@ public class ItemManager {
     }
 
     public static ItemStack setDiggingTool(ItemStack input, boolean flag) {
-        NBT.modify(input, n -> {
-            n.setBoolean(property("digging-tool"), flag);
-        });
+        var nbt = NBT.itemStackToNBT(input);
+        nbt.setBoolean(property("digging-tool"), flag);
+        var result = NBT.itemStackFromNBT(nbt);
 
         if (flag) {
-            setLore(input, nuclearSeeking);
+            setLore(result, nuclearSeeking);
         } else {
-            removeLore(input, nuclearSeeking);
+            removeLore(result, nuclearSeeking);
         }
 
-        return input;
+        return result;
     }
 
     public static boolean isEffectProof(ItemStack input) {
-        return NBT.get(input, t -> t.getBoolean(property("effect-proof")));
+        return NBT.itemStackToNBT(input).getBoolean(property("effect-proof"));
     }
 
     public static boolean isDiggingTool(ItemStack input) {
-        return NBT.get(input, t -> t.getBoolean(property("digging-tool")));
+        return NBT.itemStackToNBT(input).getBoolean(property("digging-tool"));
     }
 }
