@@ -2,3 +2,15 @@ name: nuker
 version: '${version}'
 main: red.oases.nuker.Nuker
 api-version: '1.20'
+commands:
+  nuker:
+    description: "Nuker controlling command"
+    usage: "/nuker <subcommand> ..."
+    aliases: []
+    permission-message: "You do not have permission to use this command"
+    permission: nuker.command
+permissions:
+  nuker.command:
+    default: true
+  nuker.bypass:
+    default: false
