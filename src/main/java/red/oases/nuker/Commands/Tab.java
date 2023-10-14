@@ -15,12 +15,12 @@ public class Tab implements TabCompleter {
             case 1 -> List.of("item");
 
             case 2 -> switch (args[0]) {
-                case "item" -> List.of("digging-tool", "effect-proof");
+                case "item" -> List.of("set");
                 default -> null;
             };
 
             case 3 -> switch (args[0]) {
-                case "item" -> List.of("set");
+                case "item" -> List.of("digging-tool", "effect-proof");
                 default -> null;
             };
 
