@@ -1,9 +1,10 @@
 package red.oases.nuker;
 
-import de.tr7zw.changeme.nbtapi.NBT;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -13,8 +14,8 @@ public class ItemManager {
     public static final Component immunityText = Component.text("核爆免疫").color(NamedTextColor.GREEN);
     public static final Component nuclearSeeking = Component.text("核能窥探").color(NamedTextColor.GREEN);
 
-    public static String property(@NotNull String key) {
-        return "oasis-nuker-item-property-" + key;
+    public static NamespacedKey property(@NotNull String key) {
+        return new NamespacedKey(Nuker.plugin, "oasis-nuker-item-property-" + key);
     }
 
     public static void setLore(ItemStack input, Component comp) {
@@ -36,7 +37,10 @@ public class ItemManager {
     }
 
     public static ItemStack setEffectProof(ItemStack input, boolean flag) {
-        NBT.itemStackToNBT(input).setBoolean(property("effect-proof"), flag);
+        var meta = input.getItemMeta();
+        var data = meta.getPersistentDataContainer();
+        data.set(property("effect-proof"), PersistentDataType.BOOLEAN, flag);
+        input.setItemMeta(meta);
 
         if (flag) {
             setLore(input, immunityText);
@@ -48,24 +52,33 @@ public class ItemManager {
     }
 
     public static ItemStack setDiggingTool(ItemStack input, boolean flag) {
-        var nbt = NBT.itemStackToNBT(input);
-        nbt.setBoolean(property("digging-tool"), flag);
-        var result = NBT.itemStackFromNBT(nbt);
+        var meta = input.getItemMeta();
+        var data = meta.getPersistentDataContainer();
+        data.set(property("digging-tool"), PersistentDataType.BOOLEAN, flag);
+        input.setItemMeta(meta);
 
         if (flag) {
-            setLore(result, nuclearSeeking);
+            setLore(input, nuclearSeeking);
         } else {
-            removeLore(result, nuclearSeeking);
+            removeLore(input, nuclearSeeking);
         }
 
-        return result;
+        return input;
+    }
+
+    public static boolean isTrueProperty(ItemStack input, NamespacedKey key) {
+        var meta = input.getItemMeta();
+        if (meta == null) return false;
+        var container = meta.getPersistentDataContainer();
+        return Boolean.TRUE.equals(container.get(key, PersistentDataType.BOOLEAN));
+
     }
 
     public static boolean isEffectProof(ItemStack input) {
-        return NBT.itemStackToNBT(input).getBoolean(property("effect-proof"));
+        return isTrueProperty(input, property("effect-proof"));
     }
 
     public static boolean isDiggingTool(ItemStack input) {
-        return NBT.itemStackToNBT(input).getBoolean(property("digging-tool"));
+       return isTrueProperty(input, property("digging-tool"));
     }
 }

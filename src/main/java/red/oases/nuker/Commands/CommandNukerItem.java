@@ -1,6 +1,5 @@
 package red.oases.nuker.Commands;
 
-import de.tr7zw.changeme.nbtapi.NBT;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -58,9 +57,6 @@ public class CommandNukerItem extends Command {
                     Logs.send(sender, "无效的设置操作：请勿重复设置为同一状态");
                     return true;
                 }
-
-                System.out.println(modified.getItemMeta().lore());
-                System.out.println(NBT.itemStackToNBT(modified).getBoolean(ItemManager.property("digging-tool")));
 
                 player.getInventory().setItemInMainHand(modified);
                 Logs.send(sender, "成功：已设置手持物品的 " + key + " 属性为 " + flag);

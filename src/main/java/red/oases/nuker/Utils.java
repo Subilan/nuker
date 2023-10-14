@@ -1,5 +1,6 @@
 package red.oases.nuker;
 
+import org.bukkit.NamespacedKey;
 import org.bukkit.potion.PotionEffect;
 
 import java.util.Objects;
