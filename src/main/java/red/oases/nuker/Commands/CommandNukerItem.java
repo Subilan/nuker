@@ -44,7 +44,7 @@ public class CommandNukerItem extends Command {
                             yield ItemManager.setEffectProof(item, flag);
                         }
                         case "digging-tool" -> {
-                            if ((flag && ItemManager.isDiggingTool(item)) || (!flag && !ItemManager.isEffectProof(item)))
+                            if ((flag && ItemManager.isDiggingTool(item)) || (!flag && !ItemManager.isDiggingTool(item)))
                                 throw new IllegalStateException();
                             yield ItemManager.setDiggingTool(item, flag);
                         }
