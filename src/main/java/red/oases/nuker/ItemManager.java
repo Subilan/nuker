@@ -7,6 +7,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 
@@ -79,11 +80,13 @@ public class ItemManager {
 
     }
 
-    public static boolean isEffectProof(ItemStack input) {
+    public static boolean isEffectProof(@Nullable ItemStack input) {
+        if (input == null) return false;
         return isTrueProperty(input, property("effect-proof"));
     }
 
-    public static boolean isDiggingTool(ItemStack input) {
-       return isTrueProperty(input, property("digging-tool"));
+    public static boolean isDiggingTool(@Nullable ItemStack input) {
+        if (input == null) return false;
+        return isTrueProperty(input, property("digging-tool"));
     }
 }
